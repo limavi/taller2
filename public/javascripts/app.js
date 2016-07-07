@@ -1,6 +1,6 @@
-angular.module('app', ['ngAnimate'])
+var app = angular.module('app', ['ngAnimate']);
 
-.config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
+app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
   $provide.factory('AuthenticationInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
     return {
       'request': function (config) {
@@ -27,10 +27,10 @@ angular.module('app', ['ngAnimate'])
 
   // Add the interceptor
   $httpProvider.interceptors.push('AuthenticationInterceptor');
-}])
+}]);
 
 // Just some stuff to display notifications and the current user
-.run(['$rootScope', 'Authenticated', function ($rootScope, Authenticated) {
+app.run(['$rootScope', 'Authenticated', function ($rootScope, Authenticated) {
   $rootScope.$on('notification', function (e, severity, message) {
     $rootScope.notification = {severity: severity, message: message};
   });
@@ -41,10 +41,10 @@ angular.module('app', ['ngAnimate'])
 
   $rootScope.user = Authenticated.current
   $rootScope.logout = Authenticated.logout
-}])
+}]);
 
 // A singleton service to handle all authentification process
-.factory('Authenticated', ['$http', '$rootScope', function ($http, $rootScope) {
+app.factory('Authenticated', ['$http', '$rootScope', function ($http, $rootScope) {
   var user = null;
   sync();
 
@@ -102,11 +102,11 @@ angular.module('app', ['ngAnimate'])
     isAuthenticated: isAuthenticated,
     current: current
   };
-}])
+}]);
 
 // Simple controller to make some dummy HTTP request to our server
 // and see if the user could actually do them or not
-.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope, $http, Authenticated) {
+app.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope, $http, Authenticated) {
   var ctrl = this;
 
   ctrl.loginForm = {};
