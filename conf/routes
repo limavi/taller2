@@ -10,5 +10,12 @@ GET     /api/public                 controllers.Application.publicApi
 GET     /api/private                controllers.Application.privateApi
 GET     /api/admin                  controllers.Application.adminApi
 
+GET     /episodios                  controllers.Application.consultarEpisodios(id: Option[ Long ])
+GET     /episodiosPorpaciente       controllers.Application.consultarEpisodiosPorPaciente(TipoDocumento: String, NumeroDocumento: Long)
+GET     /pacientes                  controllers.Application.consultarPacientes(TipoDocumento:Option[ String ], NumeroDocumento: Option[Long ])
+
+POST    /agregarEpisodio            controllers.Application.agregarEpisodio
+POST    /sincronizarEpisodios       controllers.Application.sincronizarEpisodios
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
