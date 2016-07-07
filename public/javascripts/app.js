@@ -1,12 +1,8 @@
 angular.module('app', ['ngAnimate'])
 
 .config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
-  // Creating a new HTTP interceptor to serve two purposes
-  // 1) Add the token inside the headers at every request from the client
-  // 2) Detect authorization failures (status 401 or 403) and provide default notifications to the user
   $provide.factory('AuthenticationInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
     return {
-      // Appending the token by reading it from the storage (localStorage by default)
       'request': function (config) {
         var token = JWT.get();
         if (token) {
@@ -15,7 +11,6 @@ angular.module('app', ['ngAnimate'])
         return config;
       },
 
-      // Sending events for notification if we detect an authentification problem
       'responseError': function (rejection) {
         if (rejection.status === 401) {
           // User isn't authenticated
@@ -25,7 +20,6 @@ angular.module('app', ['ngAnimate'])
           // User is authenticated but do not have permission to access this API
           $rootScope.$emit('notification', 'warning', 'Sorry, you do not have access to this API... Maybe if your username was "admin"... who knows...');
         }
-
         return $q.reject(rejection);
       }
     }
