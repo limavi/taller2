@@ -10,6 +10,7 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import pdi.jwt._
 import play.twirl.api.Html
+import views.html
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -45,8 +46,7 @@ class Application extends Controller with Secured {
   }
 
   def publicApi = Action {
-    Ok("views/sidepanel.html")
-    //Ok(views.html.pacientes())
+    Ok(views.html.pacientes())
   }
 
   def privateApi = Authenticated {
