@@ -126,9 +126,9 @@ app.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope
       // 401 and 403 errors are already handled by the interceptor
     });
   }
-
-  ctrl.publicCall = function publicCall() {
-    get1('/api/public');
+/*
+  ctrl.consultaDePacientes = function publicCall() {
+    ctrl.rutaInclude ='/api/consultaDePacientes';
   };
 
   ctrl.privateCall = function privateCall() {
@@ -138,6 +138,8 @@ app.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope
   ctrl.adminCall = function adminCall() {
     get1('/api/admin');
   };
+
+  */
 
   ctrl.notif = function notif(severity, message) {
     $scope.$emit('notification', severity, message);

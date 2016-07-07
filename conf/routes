@@ -6,9 +6,9 @@
 GET     /                           controllers.Application.index
 
 POST    /api/login                  controllers.Application.login
-GET     /api/public                 controllers.Application.publicApi
-GET     /api/private                controllers.Application.privateApi
-GET     /api/admin                  controllers.Application.adminApi
+GET     /api/consultaDePacientes    controllers.Application.consultaDePacientes
+GET     /api/consultaDeEpisodios    controllers.Application.consultaDeEpisodios
+GET     /api/registrarEpisodio      controllers.Application.registrarEpisodio
 
 GET     /episodios                  controllers.Application.consultarEpisodios(id: Option[ Long ])
 GET     /episodiosPorpaciente       controllers.Application.consultarEpisodiosPorPaciente(TipoDocumento: String, NumeroDocumento: Long)

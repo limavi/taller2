@@ -26,6 +26,19 @@ class Application extends Controller with Secured {
     Ok(views.html.index(new Html("")))
   }
 
+  def consultaDePacientes = Action {
+    Ok(views.html.consultaPacientes())
+  }
+
+  def consultaDeEpisodios = Authenticated {
+    Ok(views.html.consultarEpisodios())
+  }
+
+  def registrarEpisodio = Admin {
+    Ok(views.html.registrarEpisodio())
+  }
+
+
   private val loginForm: Reads[(String, String)] =
     (JsPath \ "username").read[String] and
     (JsPath \ "password").read[String] tupled
@@ -43,18 +56,6 @@ class Application extends Controller with Secured {
         }
       }
     )
-  }
-
-  def publicApi = Action {
-    Ok(views.html.pacientes())
-  }
-
-  def privateApi = Authenticated {
-    Ok("Only the best can see that.")
-  }
-
-  def adminApi = Admin {
-    Ok("Top secret data. Hopefully, nobody will ever access it.")
   }
 
   def consultarEpisodios(id: Option[ Long ]) = Action.async { implicit request =>
