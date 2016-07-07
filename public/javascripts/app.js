@@ -119,7 +119,7 @@ app.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope
     });
   };
 
-  function get(endpoint) {
+  function get1(endpoint) {
     return $http.get(endpoint).then(function (response) {
       ctrl.notif('success', response.data);
     }, function (error) {
@@ -128,15 +128,15 @@ app.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope
   }
 
   ctrl.publicCall = function publicCall() {
-    get('/api/public');
+    get1('/api/public');
   };
 
   ctrl.privateCall = function privateCall() {
-    get('/api/private');
+    get1('/api/private');
   };
 
   ctrl.adminCall = function adminCall() {
-    get('/api/admin');
+    get1('/api/admin');
   };
 
   ctrl.notif = function notif(severity, message) {

@@ -1,4 +1,4 @@
-@()
+@(content: Html)
 <!DOCTYPE html>
 
 <html ng-app="app">
@@ -16,16 +16,14 @@
             <div><div>Hello there! How are you today <strong>{{user().name}}</strong>?</div></div>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-              <div><button type="button" class="btn-public" ng-click="ctrl.publicCall()">Public API</button></div>
-              <div><button type="button" class="btn-private" ng-click="ctrl.privateCall()">Private API</button></div>
-              <div><button type="button" class="btn-admin"ng-click="ctrl.adminCall()">Admin API</button></div>
-            </ul>
-          </div>
-          <div class="container-fluid">
-            <div class="row">
-              <div ui-view></div>
+            <div style="width:30%">
+              <ul class="nav navbar-nav navbar-right">
+                <div><button type="button" class="btn-public" ng-click="ctrl.publicCall()">Public API</button></div>
+                <div><button type="button" class="btn-private" ng-click="ctrl.privateCall()">Private API</button></div>
+                <div><button type="button" class="btn-admin"ng-click="ctrl.adminCall()">Admin API</button></div>
+              </ul>
             </div>
+            <div style="width:70%">@content</div>
           </div>
         </div>
     </nav>
