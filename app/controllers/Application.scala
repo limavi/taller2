@@ -25,7 +25,7 @@ class Application extends Controller with Secured {
   def index = Action {
     Ok(views.html.index(new Html("")))
   }
-
+  //Admin
   def consultaDePacientes = Action {
     Ok(views.html.consultaPacientes())
   }
@@ -34,7 +34,7 @@ class Application extends Controller with Secured {
     Ok(views.html.consultarEpisodios())
   }
 
-  def registrarEpisodio = Admin {
+  def registrarEpisodio = Action {
     Ok(views.html.registrarEpisodio())
   }
 
@@ -48,8 +48,8 @@ class Application extends Controller with Secured {
         BadRequest(JsError.toJson(errors))
       },
       form => {
-        if (listaContraseñasPosibles.contains(form._2)) {
-          Ok.addingToJwtSession("user", User(form._1))
+        if (listaContraseñasPosibles.contains(form._2)) { //aqui nos debemos traer un rol
+          Ok.addingToJwtSession("user", User(form._1,"Paciente"))
         } else {
           Unauthorized
         }

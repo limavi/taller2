@@ -22,6 +22,15 @@ object AuthenticatedAction extends ActionBuilder[AuthenticatedRequest] {
     }
 }
 
+object AdminAction2 extends ActionBuilder[AuthenticatedRequest] {
+  def invokeBlock[A](request: Request[A], block: AuthenticatedRequest[A] => Future[Result]) =
+    request.jwtSession.getAs[User]("user") match {
+      case Some(user) if user.isAdmin => block(new AuthenticatedRequest(user, request)).map(_.refreshJwtSession(request))
+      case Some(_) => Future.successful(Forbidden.refreshJwtSession(request))
+      case _ => Future.successful(Unauthorized)
+    }
+}
+
 object AdminAction extends ActionBuilder[AuthenticatedRequest] {
   def invokeBlock[A](request: Request[A], block: AuthenticatedRequest[A] => Future[Result]) =
     request.jwtSession.getAs[User]("user") match {
