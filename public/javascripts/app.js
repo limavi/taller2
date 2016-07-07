@@ -5,29 +5,28 @@ app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
     console.log("entro al interceptor")
     return {
       'request': function (config) {
-        console.log("entro al interceptor request")
         var token = JWT.get();
         if (token) {
           config.headers['Authorization'] = token;
         }
+         console.log("OK interceptor request, config:  " + JSON.stringify(config))
         return config;
       },
 
       'responseError': function (rejection) {
         console.log("entro al interceptor responseError")
-        if (rejection.status === 401) {
-          // User isn't authenticated
+        if (rejection.status === 401) { // User isn't authenticated
           $rootScope.$emit('notification', 'warning', 'You need to be authenticated to access such API.');
           $rootScope.logout();
-        } else if (rejection.status === 403) {
-          // User is authenticated but do not have permission to access this API
+        } else if (rejection.status === 403) { // User is authenticated but do not have permission to access this API
+
           $rootScope.$emit('notification', 'warning', 'Sorry, you do not have access to this API... Maybe if your username was "admin"... who knows...');
         }
+        console.log("ERROR interceptor rejection:  " + JSON.stringify(rejection))
         return $q.reject(rejection);
       }
     }
   }]);
-
   // Add the interceptor
   $httpProvider.interceptors.push('AuthenticationInterceptor');
 }]);
@@ -59,20 +58,14 @@ app.factory('Authenticated', ['$http', '$rootScope', function ($http, $rootScope
     $rootScope.authenticated = !!user;
   }
 
-  // Send a login to the server...
   function login(data) {
     console.log("realiza el login " + JSON.stringify(data))
     return $http.post('/api/login', data).then(function (response) {
       // If successful, read the new token from the header
       var token = response.headers("Authorization");
       var session = JWT.read(token);
-
-      // Validate it just in case the server would have send something fishy
       if (JWT.validate(session)) {
-        // Save it in the storage so that we don't lose
-        // if the user refresh the page
-        JWT.keep(token);
-        // Synchronize if with the current session
+        JWT.keep(token); // Almacena el token en el Local storage
         sync();
       } else {
         logout();
@@ -80,10 +73,6 @@ app.factory('Authenticated', ['$http', '$rootScope', function ($http, $rootScope
     });
   }
 
-  // The logout step doesn't need any HTTP request. After all, the server
-  // doesn't keep anything about the user, it's fully stateless.
-  // We just need to remove it from the storage and sync the current session.
-  // It's immediate.
   function logout() {
     JWT.forget();
     sync();
