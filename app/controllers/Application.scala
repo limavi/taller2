@@ -20,7 +20,7 @@ class Application extends Controller with Secured {
   implicit val episodioFormat = Json.format[Episodio]
   implicit val pacienteFormat = Json.format[Paciente]
 
-  val passwords = Seq("red", "blue", "green")
+  val listaContraseñasPosibles = Seq("red", "blue", "green")
 
   def index = Action {
     Ok(views.html.index(new Html("")))
@@ -38,7 +38,6 @@ class Application extends Controller with Secured {
     Ok(views.html.registrarEpisodio())
   }
 
-
   private val loginForm: Reads[(String, String)] =
     (JsPath \ "username").read[String] and
     (JsPath \ "password").read[String] tupled
@@ -49,7 +48,7 @@ class Application extends Controller with Secured {
         BadRequest(JsError.toJson(errors))
       },
       form => {
-        if (passwords.contains(form._2)) {
+        if (listaContraseñasPosibles.contains(form._2)) {
           Ok.addingToJwtSession("user", User(form._1))
         } else {
           Unauthorized

@@ -2,8 +2,10 @@ var app = angular.module('app', ['ngAnimate']);
 
 app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
   $provide.factory('AuthenticationInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
+    console.log("entro al interceptor")
     return {
       'request': function (config) {
+        console.log("entro al interceptor request")
         var token = JWT.get();
         if (token) {
           config.headers['Authorization'] = token;
@@ -12,6 +14,7 @@ app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
       },
 
       'responseError': function (rejection) {
+        console.log("entro al interceptor responseError")
         if (rejection.status === 401) {
           // User isn't authenticated
           $rootScope.$emit('notification', 'warning', 'You need to be authenticated to access such API.');
@@ -58,6 +61,7 @@ app.factory('Authenticated', ['$http', '$rootScope', function ($http, $rootScope
 
   // Send a login to the server...
   function login(data) {
+    console.log("realiza el login " + JSON.stringify(data))
     return $http.post('/api/login', data).then(function (response) {
       // If successful, read the new token from the header
       var token = response.headers("Authorization");
@@ -71,7 +75,6 @@ app.factory('Authenticated', ['$http', '$rootScope', function ($http, $rootScope
         // Synchronize if with the current session
         sync();
       } else {
-        // If not valid, let's just logout
         logout();
       }
     });
@@ -126,20 +129,6 @@ app.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope
       // 401 and 403 errors are already handled by the interceptor
     });
   }
-/*
-  ctrl.consultaDePacientes = function publicCall() {
-    ctrl.rutaInclude ='/api/consultaDePacientes';
-  };
-
-  ctrl.privateCall = function privateCall() {
-    get1('/api/private');
-  };
-
-  ctrl.adminCall = function adminCall() {
-    get1('/api/admin');
-  };
-
-  */
 
   ctrl.notif = function notif(severity, message) {
     $scope.$emit('notification', severity, message);
