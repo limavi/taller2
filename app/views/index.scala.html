@@ -4,7 +4,7 @@
 
 <html ng-app="app">
   <head>
-    <title>JWT - Play Angular</title>
+    <title>MigrañApp</title>
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/app.css")">
   </head>
@@ -24,13 +24,15 @@
     <section ng-show="authenticated">
       <div>Hello there! How are you today <strong>{{user().name}}</strong>?</div>
       <button type="button" class="btn btn-logout" ng-click="logout()">Logout</button>
+
+      <section>
+        <button class="btn btn-public" type="button" ng-click="ctrl.publicCall()">Public API</button>
+        <button class="btn btn-private" type="button" ng-click="ctrl.privateCall()">Private API</button>
+        <button class="btn btn-admin" type="button" ng-click="ctrl.adminCall()">Admin API</button>
+      </section>
     </section>
 
-    <section>
-      <button class="btn btn-public" type="button" ng-click="ctrl.publicCall()">Public API</button>
-      <button class="btn btn-private" type="button" ng-click="ctrl.privateCall()">Private API</button>
-      <button class="btn btn-admin" type="button" ng-click="ctrl.adminCall()">Admin API</button>
-    </section>
+
 
     <section ng-if="notification" class="fade-if" ng-click="closeNotification()">
       <div class="notification" ng-class="'' + notification.severity">
