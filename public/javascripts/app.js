@@ -9,7 +9,7 @@ app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
         if (token) {
           config.headers['Authorization'] = token;
         }
-         console.log("OK interceptor request, config:  " + JSON.stringify(config))
+        //console.log("OK interceptor request, config:  " + JSON.stringify(config))
         return config;
       },
 
@@ -17,12 +17,12 @@ app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
         console.log("entro al interceptor responseError")
         if (rejection.status === 401) { // User isn't authenticated
           $rootScope.$emit('notification', 'warning', 'You need to be authenticated to access such API.');
-          $rootScope.logout();
+          //$rootScope.logout();
         } else if (rejection.status === 403) { // User is authenticated but do not have permission to access this API
 
-          $rootScope.$emit('notification', 'warning', 'Sorry, you do not have access to this API... Maybe if your username was "admin"... who knows...');
+          $rootScope.$emit('notification', 'warning', 'No tiene acceso a esta opción');
         }
-        console.log("ERROR interceptor rejection:  " + JSON.stringify(rejection))
+        //console.log("ERROR interceptor rejection:  " + JSON.stringify(rejection))
         return $q.reject(rejection);
       }
     }

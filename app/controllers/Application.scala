@@ -1,7 +1,7 @@
 package controllers
 
 import autenticacion.models.User
-import autenticacion.Secured
+import autenticacion.{MedicoAction, PacienteAction, Secured}
 import migrana.modelo.{Episodio, Paciente, Repository}
 import migrana.services.migranaServices
 import play.api._
@@ -10,7 +10,6 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import pdi.jwt._
 import play.twirl.api.Html
-import views.html
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -20,21 +19,21 @@ class Application extends Controller with Secured {
   implicit val episodioFormat = Json.format[Episodio]
   implicit val pacienteFormat = Json.format[Paciente]
 
-  val listaContraseñasPosibles = Seq("red", "blue", "green")
+  val listaContraseñasPosibles = Seq("red", "blue", "green")  //lili
 
   def index = Action {
     Ok(views.html.index(new Html("")))
   }
-  //Admin
-  def consultaDePacientes = Action {
+
+  def consultaDePacientes = MedicoAction {
     Ok(views.html.consultaPacientes())
   }
 
-  def consultaDeEpisodios = Authenticated {
+  def consultaDeEpisodios = MedicoAction {
     Ok(views.html.consultarEpisodios())
   }
 
-  def registrarEpisodio = Action {
+  def registrarEpisodio = PacienteAction {
     Ok(views.html.registrarEpisodio())
   }
 
@@ -48,8 +47,8 @@ class Application extends Controller with Secured {
         BadRequest(JsError.toJson(errors))
       },
       form => {
-        if (listaContraseñasPosibles.contains(form._2)) { //aqui nos debemos traer un rol
-          Ok.addingToJwtSession("user", User(form._1,"Paciente"))
+        if (listaContraseñasPosibles.contains(form._2)) { //aqui nos debemos traer un rol  lili
+          Ok.addingToJwtSession("user", User(form._1,"paciente"))
         } else {
           Unauthorized
         }
