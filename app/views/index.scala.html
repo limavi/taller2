@@ -8,9 +8,27 @@
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/app.css")">
   </head>
   <body ng-controller="HomeCtrl as ctrl">
-    <header>
 
-    </header>
+    <nav class="navbar navbar-inverse navbar-fixed-top" ng-show="authenticated">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="btn-logout" ng-click="logout()">Logout</button>
+            <div><div>Hello there! How are you today <strong>{{user().name}}</strong>?</div></div>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <div><button type="button" class="btn-public" ng-click="ctrl.publicCall()">Public API</button></div>
+              <div><button type="button" class="btn-private" ng-click="ctrl.privateCall()">Private API</button></div>
+              <div><button type="button" class="btn-admin"ng-click="ctrl.adminCall()">Admin API</button></div>
+            </ul>
+          </div>
+          <div class="container-fluid">
+            <div class="row">
+              <div ui-view></div>
+            </div>
+          </div>
+        </div>
+    </nav>
 
     <section ng-hide="authenticated">
       <form ng-submit="ctrl.login()">
@@ -19,19 +37,6 @@
         <button class="btn btn-login" type="submit">Login</button>
       </form>
     </section>
-
-    <section ng-show="authenticated">
-      <div>Hello there! How are you today <strong>{{user().name}}</strong>?</div>
-      <button type="button" class="btn btn-logout" ng-click="logout()">Logout</button>
-
-      <section>
-        <button class="btn btn-public" type="button" ng-click="ctrl.publicCall()">Public API</button>
-        <button class="btn btn-private" type="button" ng-click="ctrl.privateCall()">Private API</button>
-        <button class="btn btn-admin" type="button" ng-click="ctrl.adminCall()">Admin API</button>
-      </section>
-    </section>
-
-
 
     <section ng-if="notification" class="fade-if" ng-click="closeNotification()">
       <div class="notification" ng-class="'' + notification.severity">
