@@ -1,5 +1,7 @@
 package controllers
 
+import autenticacion.models. User
+import autenticacion.Secured
 import migrana.modelo.{Episodio, Paciente, Repository}
 import migrana.services.migranaServices
 import play.api._
@@ -7,9 +9,8 @@ import play.api.mvc._
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import pdi.jwt._
-import models.User
-import scala.concurrent.ExecutionContext.Implicits.global
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class Application extends Controller with Secured {

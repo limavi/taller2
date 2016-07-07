@@ -1,15 +1,11 @@
-package controllers
-
-import scala.concurrent.Future
-import play.api.libs.concurrent.Execution.Implicits._
-
-import play.api.mvc._
-import play.api.mvc.Results._
-import play.api.libs.json._
+package autenticacion
 
 import pdi.jwt._
-
-import models.User
+import play.api.libs.concurrent.Execution.Implicits._
+import play.api.mvc.Results._
+import play.api.mvc._
+import autenticacion.models.User
+import scala.concurrent.Future
 
 class AuthenticatedRequest[A](val user: User, request: Request[A]) extends WrappedRequest[A](request)
 
