@@ -10,6 +10,7 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import pdi.jwt._
 import play.twirl.api.Html
+import usuariosApp.services.usuariosAppServices
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -41,19 +42,26 @@ class Application extends Controller with Secured {
     (JsPath \ "username").read[String] and
     (JsPath \ "password").read[String] tupled
 
-  def login = Action(parse.json) { implicit request =>
+  def login: Action[JsValue] = Action.async(parse.json) { implicit request =>{
+    println("login")
     request.body.validate(loginForm).fold(
       errors => {
-        BadRequest(JsError.toJson(errors))
+        Future(BadRequest(JsError.toJson(errors)))
       },
       form => {
-        if (listaContraseñasPosibles.contains(form._2)) { //aqui nos debemos traer un rol  lili
-          Ok.addingToJwtSession("user", User(form._1,"paciente"))
-        } else {
-          Unauthorized
+        println("form ***")
+        usuariosAppServices.getUsuario(form._1, form._2) map( usuario =>{
+          println("usuario"+ usuario)
+            usuario match {
+              case Some(usu)=>
+                Ok.addingToJwtSession("user", User(form._1,usu.role))
+              case None=>Unauthorized
+            }
         }
+          )
       }
     )
+    }
   }
 
   def consultarEpisodios(id: Option[ Long ]) = Action.async { implicit request =>

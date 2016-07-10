@@ -16,7 +16,7 @@ app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
       'responseError': function (rejection) {
         console.log("entro al interceptor responseError")
         if (rejection.status === 401) { // User isn't authenticated
-          $rootScope.$emit('notification', 'warning', 'You need to be authenticated to access such API.');
+          $rootScope.$emit('notification', 'warning', ' No tiene acceso a esta opción.');
           //$rootScope.logout();
         } else if (rejection.status === 403) { // User is authenticated but do not have permission to access this API
 
