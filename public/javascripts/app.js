@@ -111,6 +111,17 @@ app.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope
     });
   };
 
+  ctrl.cancelarCreacionTramite = function cancelarCreacionTramite(){
+    $scope.jsonTramite="";
+    console.log("boton cancelar creacion de tramite");
+  };
+
+
+  ctrl.PreVisualizarTramite = function PreVisualizarTramite(jsonTramite){
+    console.log(jsonTramite)
+    console.log("boton PreVisualizarTramite tramite");
+  };
+
   function get1(endpoint) {
     return $http.get(endpoint).then(function (response) {
       ctrl.notif('success', response.data);

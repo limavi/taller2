@@ -1,7 +1,7 @@
 package controllers
 
 import autenticacion.models.User
-import autenticacion.{MedicoAction, PacienteAction, Secured}
+import autenticacion.{AnalistaTramitesAction, MedicoAction, PacienteAction, Secured}
 import migrana.modelo.{Episodio, Paciente, Repository}
 import migrana.services.migranaServices
 import play.api._
@@ -30,6 +30,7 @@ class Application extends Controller with Secured {
     Ok(views.html.consultaPacientes())
   }
 
+
   def consultaDeEpisodios = MedicoAction {
     Ok(views.html.consultarEpisodios())
   }
@@ -37,6 +38,11 @@ class Application extends Controller with Secured {
   def registrarEpisodio = PacienteAction {
     Ok(views.html.registrarEpisodio())
   }
+
+  def agregarTramite = AnalistaTramitesAction {
+    Ok(views.html.agregarUnTramite())
+  }
+
 
   private val loginForm: Reads[(String, String)] =
     (JsPath \ "username").read[String] and
