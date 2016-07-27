@@ -4,7 +4,7 @@ import autenticacion.models.User
 import autenticacion.{AnalistaTramitesAction, MedicoAction, PacienteAction, Secured}
 import migrana.modelo.{Episodio, Paciente, Repository}
 import migrana.services.migranaServices
-import play.api._
+import tramite.services.tramiteServices
 import play.api.mvc._
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
@@ -37,7 +37,6 @@ class Application extends Controller with Secured {
     Ok(views.html.consultaPacientes())
   }
 
-
   def consultaDeEpisodios = MedicoAction {
     Ok(views.html.consultarEpisodios())
   }
@@ -47,23 +46,24 @@ class Application extends Controller with Secured {
   }
 
   def agregarTramite = AnalistaTramitesAction {
-    println("agregar tramite")
     Ok(views.html.agregarUnTramite())
   }
 
   def generarHtmlTramite(ConfTramite:String) = Action { request =>
-
-    println("json enviado: " + ConfTramite)
     Try(Json.parse(ConfTramite)) match {
       case Success(jsonTramite)=>{
         jsonTramite.validate[Tramite].asOpt match {
-          case Some(tramite)=> Ok("html del tramite")
+          case Some(tramite)=>
+            val htmlTramite=tramiteServices.crearHtmlDelTramite(tramite)
+            Ok(htmlTramite)
           case None=> Ok("El Json no corresponde a un tramite")
         }
       }
       case _ =>Ok("El Json tiene errores")
     }
   }
+
+
 
   def agregarEpisodio= Action.async { implicit request =>
     request.body.asJson.map { json =>

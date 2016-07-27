@@ -23,6 +23,6 @@ case class campo(
 )
 
 case class atributo(
-   nombreAtributi:String,       //nombre del atributo ej: min, max, placeholder
+   nombreAtributo:String,       //nombre del atributo ej: min, max, placeholder
    valor:String                 //valor a asignar al atributo ej: min=10, placeholder="xxxx"
  )
