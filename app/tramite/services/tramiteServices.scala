@@ -9,7 +9,7 @@ object tramiteServices {
     val nombreTramite= confTramite.Nombre
     val descripcion= confTramite.Descripcion
 
-    val Encabezado = s"<center><h1>$nombreTramite</h1><br><h4>$descripcion</h4><center>"
+    val Encabezado = s"<center><h4>$nombreTramite</h4><h6>$descripcion</h6><center>"
     val body =""
 
     println(Encabezado + body)
