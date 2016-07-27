@@ -43,6 +43,9 @@ class Application extends Controller with Secured {
     Ok(views.html.agregarUnTramite())
   }
 
+  def generarHtmlTramite(jsonTramite:String) = Action { request =>
+    Ok("html del tramite")
+  }
 
   private val loginForm: Reads[(String, String)] =
     (JsPath \ "username").read[String] and

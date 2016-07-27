@@ -9,11 +9,14 @@ POST    /api/login                  controllers.Application.login
 GET     /api/consultaDePacientes    controllers.Application.consultaDePacientes
 GET     /api/consultaDeEpisodios    controllers.Application.consultaDeEpisodios
 GET     /api/registrarEpisodio      controllers.Application.registrarEpisodio
+
 GET     /api/agregarTramite         controllers.Application.agregarTramite
+GET     /api/generarHtmlTramite     controllers.Application.generarHtmlTramite(jsonConfTramite: String)
 
 GET     /episodios                  controllers.Application.consultarEpisodios(id: Option[ Long ])
 GET     /episodiosPorpaciente       controllers.Application.consultarEpisodiosPorPaciente(TipoDocumento: String, NumeroDocumento: Long)
 GET     /pacientes                  controllers.Application.consultarPacientes(TipoDocumento:Option[ String ], NumeroDocumento: Option[Long ])
+
 
 POST    /agregarEpisodio            controllers.Application.agregarEpisodio
 POST    /sincronizarEpisodios       controllers.Application.sincronizarEpisodios

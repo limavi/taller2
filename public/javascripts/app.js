@@ -113,13 +113,25 @@ app.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope
 
   ctrl.cancelarCreacionTramite = function cancelarCreacionTramite(){
     ctrl.jsonTramite="";
-    console.log("boton cancelar creacion de tramite");
   };
 
-
   ctrl.PreVisualizarTramite = function PreVisualizarTramite(jsonTramite){
-    console.log(jsonTramite)
-    console.log("boton PreVisualizarTramite tramite");
+        console.log("PreVisualizarTramite:  " + jsonTramite)
+        return $http.get("/api/generarHtmlTramite?jsonConfTramite="+jsonTramite).then(function (response) {
+          ctrl.notif('success', response.data);
+        }, function (error) {
+          // 401 and 403 errors are already handled by the interceptor
+        });
+
+        /*
+        $http.get("/api/generarHtmlTramite",jsonTramite)
+        .success(function(data){
+            console.log(data)
+        })
+        .error(function(data){
+            console.log(data)
+        });
+        */
   };
 
   function get1(endpoint) {
