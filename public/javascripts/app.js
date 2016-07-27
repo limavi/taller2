@@ -112,7 +112,7 @@ app.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope
   };
 
   ctrl.cancelarCreacionTramite = function cancelarCreacionTramite(){
-    $scope.jsonTramite="";
+    ctrl.jsonTramite="";
     console.log("boton cancelar creacion de tramite");
   };
 

@@ -1,9 +1,11 @@
 @()
-<h1>Agregar Tramite</h1>
-    <form name="crearTramite" novalidate ng-submit="ctrl.PreVisualizarTramite(jsonTramite)">
-        <label for="jsonTramite">Json del Trámite</label> <br/>
-        <textarea id="jsonTramite" name="descripcion" ng-model="jsonTramite" cols="40" rows="5"></textarea>
-        <br>
-        <button type="submit">Pre-visualizar</button>
-        <button type="button" ng-click="ctrl.cancelarCreacionTramite()">Cancelar</button>
+<center>
+    <h1>Agregar Tramite</h1>
+    <form name="crearTramite" novalidate ng-submit="ctrl.PreVisualizarTramite(ctrl.jsonTramite)" >
+    <label>Json del Trámite</label> <br/>
+    <textarea ng-model="ctrl.jsonTramite" cols="40" rows="10"></textarea>
+    <br>
+    <button type="submit">Pre-visualizar</button>
+    <button type="button" ng-click="ctrl.cancelarCreacionTramite()">Cancelar</button>
     </form>
+</center>
