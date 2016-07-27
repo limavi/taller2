@@ -15,7 +15,7 @@ trait Secured {
   def Admin = AdminAction
   def Medico = MedicoAction
   def Paciente = PacienteAction
-  //def Authenticated = AuthenticatedAction
+  def analista = AnalistaTramitesAction
 }
 
 object MedicoAction extends ActionBuilder[AuthenticatedRequest] {
@@ -54,12 +54,3 @@ object AdminAction extends ActionBuilder[AuthenticatedRequest] {
     }
 }
 
-/*
-object AuthenticatedAction extends ActionBuilder[AuthenticatedRequest] {
-  def invokeBlock[A](request: Request[A], block: AuthenticatedRequest[A] => Future[Result]) =
-    request.jwtSession.getAs[User]("user") match {
-      case Some(user) => block(new AuthenticatedRequest(user, request)).map(_.refreshJwtSession(request))
-      case _ => Future.successful(Unauthorized)
-    }
-}
-*/

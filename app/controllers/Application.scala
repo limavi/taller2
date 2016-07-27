@@ -11,14 +11,21 @@ import play.api.libs.functional.syntax._
 import pdi.jwt._
 import play.twirl.api.Html
 import usuariosApp.services.usuariosAppServices
+import tramite.modelo._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.util.{Failure, Success, Try}
 
 class Application extends Controller with Secured {
 
   implicit val episodioFormat = Json.format[Episodio]
   implicit val pacienteFormat = Json.format[Paciente]
+
+  implicit val atributoFormat = Json.format[atributo]
+  implicit val campoFormat = Json.format[campo]
+  implicit val PasoFormat = Json.format[Paso]
+  implicit val TramiteFormat = Json.format[Tramite]
 
   val listaContraseñasPosibles = Seq("red", "blue", "green")  //lili
 
@@ -40,11 +47,39 @@ class Application extends Controller with Secured {
   }
 
   def agregarTramite = AnalistaTramitesAction {
+    println("agregar tramite")
     Ok(views.html.agregarUnTramite())
   }
 
-  def generarHtmlTramite(jsonTramite:String) = Action { request =>
-    Ok("html del tramite")
+  def generarHtmlTramite(ConfTramite:String) = Action { request =>
+
+    println("json enviado: " + ConfTramite)
+    Try(Json.parse(ConfTramite)) match {
+      case Success(jsonTramite)=>{
+        jsonTramite.validate[Tramite].asOpt match {
+          case Some(tramite)=> Ok("html del tramite")
+          case None=> Ok("El Json no corresponde a un tramite")
+        }
+      }
+      case _ =>Ok("El Json tiene errores")
+    }
+  }
+
+  def agregarEpisodio= Action.async { implicit request =>
+    request.body.asJson.map { json =>
+      json.validate[Episodio].map{
+        case (episodio) => {
+          Repository.addEpisodio(episodio).map(resultado => {
+            //migranaServices.generarAlertaPorMuchosDolores(episodio.IdPaciente)
+            Ok("Episodio agregado satisfactoriamente")
+          })
+        }
+      }.recoverTotal{
+        e => Future(BadRequest("Existe un error en el JSON: "+ JsError.toFlatJson(e)))
+      }
+    }.getOrElse {
+      Future(BadRequest("Se esperaba un json para ejecutar el POST"))
+    }
   }
 
   private val loginForm: Reads[(String, String)] =
@@ -94,22 +129,6 @@ class Application extends Controller with Secured {
     res.map( _.withHeaders( ( ACCESS_CONTROL_ALLOW_ORIGIN, "*" ), ( CONTENT_TYPE, "application/hal+json" ) ) )
   }
 
-  def agregarEpisodio= Action.async { implicit request =>
-    request.body.asJson.map { json =>
-      json.validate[Episodio].map{
-        case (episodio) => {
-          Repository.addEpisodio(episodio).map(resultado => {
-            //migranaServices.generarAlertaPorMuchosDolores(episodio.IdPaciente)
-            Ok("Episodio agregado satisfactoriamente")
-          })
-        }
-      }.recoverTotal{
-        e => Future(BadRequest("Existe un error en el JSON: "+ JsError.toFlatJson(e)))
-      }
-    }.getOrElse {
-      Future(BadRequest("Se esperaba un json para ejecutar el POST"))
-    }
-  }
 
   def sincronizarEpisodios = Action { request =>
     request.body.asJson.map { json =>
