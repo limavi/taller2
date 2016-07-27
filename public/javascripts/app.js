@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngAnimate']);
+var app = angular.module('app', ['ngAnimate','ngSanitize']);
 
 app.config(['$provide', '$httpProvider', function ($provide, $httpProvider) {
   $provide.factory('AuthenticationInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
@@ -116,22 +116,19 @@ app.controller('HomeCtrl', ['$scope', '$http', 'Authenticated', function ($scope
   };
 
   ctrl.PreVisualizarTramite = function PreVisualizarTramite(jsonTramite){
-        console.log("PreVisualizarTramite:  " + jsonTramite)
+        //console.log("PreVisualizarTramite:  " + jsonTramite)
         return $http.get("/api/generarHtmlTramite?jsonConfTramite="+jsonTramite).then(function (response) {
+          ctrl.paginaDelTramite =response.data;
           ctrl.notif('success', response.data);
+
+          ctrl.myHTML =
+                 'I am an <code>HTML</code>string with ' +
+                 '<a href="#">links!</a> and other <em>stuff</em>';
+
         }, function (error) {
+          ctrl.notif('error', error);
           // 401 and 403 errors are already handled by the interceptor
         });
-
-        /*
-        $http.get("/api/generarHtmlTramite",jsonTramite)
-        .success(function(data){
-            console.log(data)
-        })
-        .error(function(data){
-            console.log(data)
-        });
-        */
   };
 
   function get1(endpoint) {

@@ -6,11 +6,13 @@ import tramite.modelo.Tramite
 object tramiteServices {
 
   def crearHtmlDelTramite(confTramite: Tramite): String = {
-    val NombreTramite= confTramite.Nombre
+    val nombreTramite= confTramite.Nombre
+    val descripcion= confTramite.Descripcion
 
-    val Encabezado = s"<html><head><title>$NombreTramite</title></head>"
+    val Encabezado = s"<center><h1>$nombreTramite</h1><br><h4>$descripcion</h4><center>"
     val body =""
 
+    println(Encabezado + body)
      Encabezado + body
   }
 
